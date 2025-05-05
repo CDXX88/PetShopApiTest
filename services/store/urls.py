@@ -2,8 +2,8 @@ class Urls:
 
     base_url = 'https://petstore.swagger.io/v2'
 
-    inventory_link = '/store/inventory/'
-    order_link = '/store/order/'
+    inventory = '/store/inventory/' ## Returns pet inventories by status
+    order = '/store/order/' ## Place an order for a pet
 
 
 
