@@ -1,6 +1,6 @@
 import requests
-from store.urls import Urls
-from store.payloads import Payloads
+from services.store.urls import Urls
+from services.store.payloads import Payloads
 
 
 class StoreAPI:

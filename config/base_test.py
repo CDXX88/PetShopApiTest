@@ -1,4 +1,4 @@
-from store.api_methods import StoreAPI
+from services.store.api_methods import StoreAPI
 
 class BaseTest:
 
