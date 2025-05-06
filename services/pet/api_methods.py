@@ -20,10 +20,20 @@ class PetAPI:
             'pet_id': response_data.get('id')
         }
 
-    def put_pet_by_id(self, payload):
+    def put_pet(self, payload):
         payload = ''
         url = f'{self._urls.base_url}{self._urls.pet}'
         response = requests.put(url, json=payload)
+        response_data = response.json()
+        return {
+            'body': response_data,
+            'status_code': response.status_code,
+            'pet_id': response_data.get('id')
+        }
+
+    def get_pet_by_status(self, pet_status): ## here heed to check how to use query param
+        url = f'{self._urls.base_url}{self._urls.pet_find_by_status}'
+        response = requests.get(url)
         response_data = response.json()
         return {
             'body': response_data,
@@ -41,6 +51,22 @@ class PetAPI:
             'pet_id': response_data.get('id')
         }
 
-if __name__ == '__main__':
-    post_pet = PetAPI().post_pet()
-    print(post_pet['status_code'])
+    def post_pet_by_id(self, pet_id):
+        url = f'{self._urls.base_url}{self._urls.pet_id}{pet_id}'
+        response = requests.post(url)
+        response_data = response.json()
+        return {
+            'body': response_data,
+            'status_code': response.status_code,
+            'pet_id': response_data.get('id')
+        }
+
+    def delete_pet_by_id(self, api_key, pet_id): ## here need to find api_key, maybe its "special-key"
+        url = f'{self._urls.base_url}{self._urls.pet_id}{pet_id}'
+        response = requests.delete(url)
+        response_data = response.json()
+        return {
+            'body': response_data,
+            'status_code': response.status_code,
+            'pet_id': response_data.get('id')
+        }
