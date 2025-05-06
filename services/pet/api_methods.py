@@ -20,6 +20,22 @@ class PetAPI:
             'pet_id': response_data.get('id')
         }
 
+    def post_pet_image(self, pet_id):
+        image = self._payloads.pet_image()
+        additional_metadata = self._payloads.metadata()
+        url = f'{self._urls.base_url}{self._urls.pet}{pet_id}{self._urls.pet_upload_image}'
+        files = {
+            "additionalMetadata": additional_metadata,
+            "file": image
+        }
+        response = requests.post(url, files=files)
+        response_data = response.json()
+        return {
+            'body': response_data,
+            'status_code': response.status_code,
+            'pet_id': response_data.get('id')
+        }
+
     def put_pet(self, payload):
         payload = ''
         url = f'{self._urls.base_url}{self._urls.pet}'
@@ -61,9 +77,9 @@ class PetAPI:
             'pet_id': response_data.get('id')
         }
 
-    def delete_pet_by_id(self, api_key, pet_id): ## here need to find api_key, maybe its "special-key"
+    def delete_pet_by_id(self, api_key, pet_id):
         url = f'{self._urls.base_url}{self._urls.pet_id}{pet_id}'
-        response = requests.delete(url)
+        response = requests.delete(url, headers=api_key)
         response_data = response.json()
         return {
             'body': response_data,
