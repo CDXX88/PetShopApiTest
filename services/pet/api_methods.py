@@ -13,7 +13,10 @@ class PetAPI:
         payload = self._payloads.pet_payload()
         url = f'{self._urls.base_url}{self._urls.pet}'
         response = requests.post(url, json=payload)
-        response_data = response.json()
+        try:
+            response_data = response.json()
+        except ValueError:
+            response_data = response.text
         return {
             'body': response_data,
             'status_code': response.status_code,
@@ -29,38 +32,52 @@ class PetAPI:
             "file": image
         }
         response = requests.post(url, files=files)
-        response_data = response.json()
+        try:
+            response_data = response.json()
+        except ValueError:
+            response_data = response.text
         return {
             'body': response_data,
-            'status_code': response.status_code,
-            'pet_id': response_data.get('id')
+            'status_code': response.status_code
         }
 
-    def put_pet(self, payload):
-        payload = ''
+    def put_pet(self):
+        payload = self._payloads.pet_payload()
         url = f'{self._urls.base_url}{self._urls.pet}'
         response = requests.put(url, json=payload)
-        response_data = response.json()
+        try:
+            response_data = response.json()
+        except ValueError:
+            response_data = response.text
         return {
             'body': response_data,
             'status_code': response.status_code,
             'pet_id': response_data.get('id')
         }
 
-    def get_pet_by_status(self, pet_status): ## here heed to check how to use query param
+    def get_pet_by_status(self):
         url = f'{self._urls.base_url}{self._urls.pet_find_by_status}'
-        response = requests.get(url)
-        response_data = response.json()
+        status = self._payloads.pet_random_status()
+        params = {
+            'status': status
+        }
+        response = requests.get(url, params=params)
+        try:
+            response_data = response.json()
+        except ValueError:
+            response_data = response.text
         return {
             'body': response_data,
-            'status_code': response.status_code,
-            'pet_id': response_data.get('id')
+            'status_code': response.status_code
         }
 
     def get_pet_by_id(self, pet_id):
         url = f'{self._urls.base_url}{self._urls.pet_id}{pet_id}'
         response = requests.get(url)
-        response_data = response.json()
+        try:
+            response_data = response.json()
+        except ValueError:
+            response_data = response.text
         return {
             'body': response_data,
             'status_code': response.status_code,
@@ -69,18 +86,33 @@ class PetAPI:
 
     def post_pet_by_id(self, pet_id):
         url = f'{self._urls.base_url}{self._urls.pet_id}{pet_id}'
-        response = requests.post(url)
-        response_data = response.json()
+        name = self._payloads.pet_name()
+        status = self._payloads.pet_random_status()
+        params = {
+            'name': name,
+            'status': status
+        }
+        response = requests.post(url, params=params)
+        try:
+            response_data = response.json()
+        except ValueError:
+            response_data = response.text
         return {
             'body': response_data,
             'status_code': response.status_code,
             'pet_id': response_data.get('id')
         }
 
-    def delete_pet_by_id(self, api_key, pet_id):
+    def delete_pet_by_id(self, pet_id):
         url = f'{self._urls.base_url}{self._urls.pet_id}{pet_id}'
-        response = requests.delete(url, headers=api_key)
-        response_data = response.json()
+        headers = {
+            'api-key': 'special-key'
+        }
+        response = requests.delete(url, headers=headers)
+        try:
+            response_data = response.json()
+        except ValueError:
+            response_data = response.text
         return {
             'body': response_data,
             'status_code': response.status_code,

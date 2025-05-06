@@ -42,3 +42,9 @@ class Payloads:
 
         return "generated.png", buffer, "image/png"
 
+    def pet_random_status(self):
+        return random.choice(["available", "pending", "sold"])
+
+    def pet_name(self):
+        return fake.name()
+

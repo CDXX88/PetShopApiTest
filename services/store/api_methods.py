@@ -12,7 +12,10 @@ class StoreAPI:
     def get_inventory(self):
         url = f"{self._urls.base_url}{self._urls.inventory}"
         response = requests.get(url)
-        response_data = response.json()
+        try:
+            response_data = response.json()
+        except ValueError:
+            response_data = response.text
         return {
             'response_body': response_data,
             'status_code': response.status_code,
@@ -22,7 +25,10 @@ class StoreAPI:
         payload = self._payloads.order_payload()
         url = f'{self._urls.base_url}{self._urls.order}'
         response = requests.post(url, json=payload)
-        response_data = response.json()
+        try:
+            response_data = response.json()
+        except ValueError:
+            response_data = response.text
         return {
             'response_body': response_data,
             'status_code': response.status_code,
@@ -32,7 +38,10 @@ class StoreAPI:
     def get_order_by_id(self, order_id):
         url = f'{self._urls.base_url}{self._urls.order}{order_id}'
         response = requests.get(url)
-        response_data = response.json()
+        try:
+            response_data = response.json()
+        except ValueError:
+            response_data = response.text
         return {
             'response_body': response_data,
             'status_code': response.status_code,
@@ -41,7 +50,10 @@ class StoreAPI:
     def delete_order_by_id(self, order_id):
         url = f'{self._urls.base_url}{self._urls.order}{order_id}'
         response = requests.delete(url)
-        response_data = response.json()
+        try:
+            response_data = response.json()
+        except ValueError:
+            response_data = response.text
         return {
             'response_body': response_data,
             'status_code': response.status_code,
