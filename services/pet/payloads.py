@@ -31,7 +31,7 @@ class Payloads:
         return fake.uuid4()
 
     def pet_image(self):
-        width, height = 100, 100
+        width, height = 20, 20
         color = random.choice(["red", "green", "blue", "purple"])
 
         img = Image.new("RGB", (width, height), color=color)

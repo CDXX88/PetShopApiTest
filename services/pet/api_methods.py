@@ -26,18 +26,18 @@ class PetAPI:
     def post_pet_image(self, pet_id):
         image = self._payloads.pet_image()
         additional_metadata = self._payloads.metadata()
-        url = f'{self._urls.base_url}{self._urls.pet}{pet_id}{self._urls.pet_upload_image}'
-        files = {
-            "additionalMetadata": additional_metadata,
-            "file": image
-        }
-        response = requests.post(url, files=files)
+        url = f'{self._urls.base_url}{self._urls.pet_id}{pet_id}{self._urls.pet_upload_image}'
+        data = {"additionalMetadata": additional_metadata}
+        files = {"file": image}
+
+        response = requests.post(url, data=data, files=files)
         try:
-            response_data = response.json()
+            body = response.json()
         except ValueError:
-            response_data = response.text
+            body = response.text
+
         return {
-            'body': response_data,
+            'body': body,
             'status_code': response.status_code
         }
 
@@ -49,6 +49,7 @@ class PetAPI:
             response_data = response.json()
         except ValueError:
             response_data = response.text
+
         return {
             'body': response_data,
             'status_code': response.status_code,
