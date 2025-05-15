@@ -103,8 +103,3 @@ class UserAPI:
             'body': response_data,
             'status_code': response.status_code
         }
-
-# if __name__ == '__main__':
-#     api = UserAPI()
-#     method = api.get_user_login(username='user', password='passs')
-#     print(method['status_code'])

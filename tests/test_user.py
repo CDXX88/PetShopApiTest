@@ -6,6 +6,12 @@ class TestUsers(BaseTest):
         response = self.user_api.post_user()
         assert response['status_code'] == 200, "Test should return status code 200"
 
+    def test_get_user_by_user_name(self):
+        create = self.user_api.post_user()
+        username = create['username']
+        response = self.user_api.get_user_by_user_name(username)
+        assert response['status_code'] == 200, "Test should return status code 200"
+
     def test_post_user_create_with_list(self):
         response = self.user_api.post_user_create_with_list()
         assert response['status_code'] == 200, "Test should return status code 200"
@@ -15,12 +21,6 @@ class TestUsers(BaseTest):
         username = create['username']
         password = create['password']
         response = self.user_api.get_user_login(username, password)
-        assert response['status_code'] == 200, "Test should return status code 200"
-
-    def test_get_user_by_user_name(self):
-        create = self.user_api.post_user()
-        username = create['username']
-        response = self.user_api.get_user_by_user_name(username)
         assert response['status_code'] == 200, "Test should return status code 200"
 
     def test_put_user_by_user_name(self):

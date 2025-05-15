@@ -1,3 +1,5 @@
 .venv
 .idea
 sandbox.py
+pet_shop_start.sh
+pet_shop_stop.sh
