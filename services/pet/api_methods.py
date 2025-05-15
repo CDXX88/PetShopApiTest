@@ -12,15 +12,19 @@ class PetAPI:
     def post_pet(self):
         payload = self._payloads.pet_payload()
         url = f'{self._urls.base_url}{self._urls.pet}'
+        tag_name = None
         response = requests.post(url, json=payload)
         try:
             response_data = response.json()
+            tags = response_data.get('tags', [])
+            tag_name = tags[0].get('name')
         except ValueError:
             response_data = response.text
         return {
             'body': response_data,
             'status_code': response.status_code,
-            'pet_id': response_data.get('id')
+            'pet_id': response_data.get('id'),
+            'tag': tag_name
         }
 
     def post_pet_image(self, pet_id):
@@ -29,7 +33,6 @@ class PetAPI:
         url = f'{self._urls.base_url}{self._urls.pet_id}{pet_id}{self._urls.pet_upload_image}'
         data = {"additionalMetadata": additional_metadata}
         files = {"file": image}
-
         response = requests.post(url, data=data, files=files)
         try:
             body = response.json()
@@ -61,6 +64,21 @@ class PetAPI:
         status = self._payloads.pet_random_status()
         params = {
             'status': status
+        }
+        response = requests.get(url, params=params)
+        try:
+            response_data = response.json()
+        except ValueError:
+            response_data = response.text
+        return {
+            'body': response_data,
+            'status_code': response.status_code
+        }
+
+    def get_pet_by_tags(self, tags):
+        url = f'{self._urls.base_url}{self._urls.pet_find_by_tags}'
+        params = {
+            'tags': tags
         }
         response = requests.get(url, params=params)
         try:
