@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build tests image
-        run: docker build -t petshop-api-tests -f Dockerfile .
+        run: docker build -t petshop -f Dockerfile .
 
       - name: Wait for petshop to be ready
         run: |
@@ -43,4 +43,4 @@ jobs:
           docker network connect test-net $CONTAINER_ID
 
       - name: Run API tests container
-        run: docker run --rm --network test-net petshop-api-tests
+        run: docker run --rm --network test-net petshop
