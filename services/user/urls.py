@@ -1,6 +1,6 @@
 class Urls:
 
-    base_url = 'http://localhost:8080'
+    base_url = 'http://localhost:8080/api/v3'
 
     user = '/user' ## create user
     user_with_array = '/user/createWithList' ## create list of users with given input array

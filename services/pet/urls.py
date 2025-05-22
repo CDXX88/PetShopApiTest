@@ -1,6 +1,6 @@
 class Urls:
 
-    base_url = 'http://localhost:8080'
+    base_url = 'http://localhost:8080/api/v3'
 
     pet = '/pet' ## add a new pet to the store and update an existing pet, used in put_pet and post_pet
     pet_id = '/pet/' ## used in delete, update, get_by_id
