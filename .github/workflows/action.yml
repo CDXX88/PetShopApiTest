@@ -1,42 +1,21 @@
-name: Run API Tests
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:
-
 jobs:
-  api-tests:
+  test:
     runs-on: ubuntu-latest
-
-    services:
-      petshop:
-        image: swaggerapi/petstore3
-        ports:
-          - 8080:8080
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+    - name: Check out code
+      uses: actions/checkout@v3
 
-      - name: Build tests image
-        run: docker build -t petshop -f Dockerfile .
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
 
-      - name: Wait for petshop to be ready
-        run: |
-          echo "Waiting for petshop service to be ready..."
-          for i in {1..60}; do
-            curl --fail http://localhost:8080/api/v3/openapi.json && echo "Ready!" && exit 0
-            echo "Not ready yet. Retry in 5s..."
-            sleep 5
-          done
-          echo "Service did not become ready in time" && exit 1
+    - name: Start required service (e.g., Swagger PetStore API)
+      run: |
+        docker run -d -p 8080:8080 swaggerapi/petstore3
 
-      - name: Run API tests container
-        run: docker run --rm petshop
+    - name: Install dependencies
+      run: pip install -r requirements.txt
 
-      - name: Debug petshop service logs
-        if: failure()
-        run: docker logs $(docker ps -q --filter ancestor=swaggerapi/petstore3)
+    - name: Run tests
+      run: pytest
