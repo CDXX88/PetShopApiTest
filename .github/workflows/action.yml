@@ -27,7 +27,7 @@ jobs:
       - name: Wait for petshop to be ready
         run: |
           echo "Waiting for petshop service to be ready..."
-          for i in {1..30}; do
+          for i in {1..60}; do
             curl --fail http://localhost:8080/api/v3/openapi.json && echo "Ready!" && exit 0
             echo "Not ready yet. Retry in 5s..."
             sleep 5
@@ -36,3 +36,7 @@ jobs:
 
       - name: Run API tests container
         run: docker run --rm petshop
+
+      - name: Debug petshop service logs
+        if: failure()
+        run: docker logs $(docker ps -q --filter ancestor=swaggerapi/petstore3)
