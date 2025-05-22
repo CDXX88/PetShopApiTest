@@ -34,13 +34,5 @@ jobs:
           done
           echo "Service did not become ready in time" && exit 1
 
-      - name: Create Docker network
-        run: docker network create test-net
-
-      - name: Connect petshop service to network
-        run: |
-          CONTAINER_ID=$(docker ps -q --filter ancestor=swaggerapi/petstore3)
-          docker network connect test-net $CONTAINER_ID
-
       - name: Run API tests container
-        run: docker run --rm --network test-net petshop
+        run: docker run --rm petshop
