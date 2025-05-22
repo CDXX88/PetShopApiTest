@@ -1,6 +1,6 @@
 class Urls:
 
-    base_url = 'https://petstore.swagger.io/v2'
+    base_url = 'http://petshop-api-tests:8080'
 
     inventory = '/store/inventory/' ## Returns pet inventories by status
     order = '/store/order/' ## Place an order for a pet

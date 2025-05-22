@@ -1,6 +1,6 @@
 class Urls:
 
-    base_url = 'https://petstore.swagger.io/v2'
+    base_url = 'http://petshop-api-tests:8080'
 
     user = '/user' ## create user
     user_with_array = '/user/createWithList' ## create list of users with given input array

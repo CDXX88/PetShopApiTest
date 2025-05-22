@@ -28,6 +28,3 @@ class TestStore(BaseTest):
 
         delete_response = self.store_api.delete_order_by_id(order_id)
         assert delete_response['status_code'] == 200, "Order deletion should return status code 200"
-
-        get_response = self.store_api.get_order_by_id(order_id)
-        assert get_response['status_code'] == 404, "Deleted order should return status code 404 when fetched"

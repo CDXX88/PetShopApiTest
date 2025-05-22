@@ -1,0 +1,42 @@
+name: Run API Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      petshop:
+        image: swaggerapi/petstore3
+        ports:
+          - 8080:8080
+        options: >-
+          --health-cmd "curl --fail http://localhost:8080/api/v3/openapi.json || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Build tests image
+        run: |
+          docker build -t petshop-api-tests -f Dockerfile .
+
+      - name: Create Docker network
+        run: docker network create test-net
+
+      - name: Connect petshop service to network
+        run: |
+          CONTAINER_ID=$(docker ps -q --filter ancestor=swaggerapi/petstore3)
+          docker network connect test-net $CONTAINER_ID
+
+      - name: Run API tests container
+        run: docker run --rm --network test-net petshop-api-tests
