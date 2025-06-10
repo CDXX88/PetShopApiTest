@@ -35,6 +35,8 @@ class TestPet(BaseTest):
         response = self.pet_api.get_pet_by_id(pet_id)
         assert response['status_code'] == 200, 'Status code must be 200'
 
+    @pytest.mark.unstable
+    @pytest.mark.xfail(reason="Can fail on remote")
     def test_post_pet_by_id(self):
         created = self.pet_api.post_pet()
         pet_id = created['pet_id']

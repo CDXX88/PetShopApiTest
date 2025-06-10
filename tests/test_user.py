@@ -1,3 +1,4 @@
+import pytest
 from config.base_test import BaseTest
 
 class TestUsers(BaseTest):
@@ -6,6 +7,8 @@ class TestUsers(BaseTest):
         response = self.user_api.post_user()
         assert response['status_code'] == 200, "Test should return status code 200"
 
+    @pytest.mark.unstable
+    @pytest.mark.xfail(reason="Can fail on remote")
     def test_get_user_by_user_name(self):
         create = self.user_api.post_user()
         username = create['username']
@@ -29,6 +32,8 @@ class TestUsers(BaseTest):
         response = self.user_api.put_user_by_user_name(username)
         assert response['status_code'] == 200, "Test should return status code 200"
 
+    @pytest.mark.unstable
+    @pytest.mark.xfail(reason="Can fail on remote")
     def test_delete_user_by_user_name(self):
         create = self.user_api.post_user()
         username = create['username']

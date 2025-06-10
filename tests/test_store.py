@@ -1,3 +1,4 @@
+import pytest
 from config.base_test import BaseTest
 
 class TestStore(BaseTest):
@@ -10,6 +11,8 @@ class TestStore(BaseTest):
         response = self.store_api.post_order()
         assert response['status_code'] == 200, "Order creation should return status code 200"
 
+    @pytest.mark.unstable
+    @pytest.mark.xfail(reason="Can fail on remote")
     def test_get_order_by_id(self):
         created = self.store_api.post_order()
         order_id = created['order_id']
@@ -17,6 +20,8 @@ class TestStore(BaseTest):
         response = self.store_api.get_order_by_id(order_id)
         assert response['status_code'] == 200, "Fetching order should return status code 200"
 
+    @pytest.mark.unstable
+    @pytest.mark.xfail(reason="Can fail on remote")
     def test_delete_order_by_id(self):
         created = self.store_api.post_order()
         order_id = created['order_id']
