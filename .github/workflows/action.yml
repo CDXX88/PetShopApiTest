@@ -10,21 +10,29 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        stage: [DOCKER, REMOTE]
+
     steps:
-    - name: Check out code
-      uses: actions/checkout@v3
+      - name: Check out code
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
-    - name: Start required service (e.g., Swagger PetStore API)
-      run: |
-        docker run -d -p 8080:8080 swaggerapi/petstore3
+      - name: Start required service (only for DOCKER stage)
+        if: matrix.stage == 'DOCKER'
+        run: |
+          docker run -d -p 8080:8080 swaggerapi/petstore3
 
-    - name: Install dependencies
-      run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
-    - name: Run tests
-      run: pytest
+      - name: Run tests for ${{ matrix.stage }}
+        run: pytest
+        env:
+          STAGE: ${{ matrix.stage }}
